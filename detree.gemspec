@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "detree"
   s.version     = Detree::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["Rafael Barbolo Lopes", "Rafael Ivan Garcia"]
+  s.email       = ["tech@infosimples.com.br"]
+  s.homepage    = "http://github.com/infosimples/detree"
+  s.summary     = %q{Ruby gem for high level text parsing from HTML/XML}
+  s.description = %q{Detree is able to parse text from HTML/XML, keeping its tree structure and indentation levels.}
 
   s.rubyforge_project = "detree"
 

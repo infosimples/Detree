@@ -1,3 +1,7 @@
+require 'detree/version'
+require 'detree/node'
+require 'detree/parser'
+
 module Detree
-  # Your code goes here...
+  
 end
