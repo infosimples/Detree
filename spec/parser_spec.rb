@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Detree::Parser do
   
-  it "must parse an xml node" do
+  it "must parse a single xml node" do
     node = Detree::Parser.xml("<a>sample</a>")
     node.name.should == 'a'
     node.text.should == 'sample'
@@ -39,6 +39,42 @@ describe Detree::Parser do
     expected_node = html_node
     
     Detree::Parser.html(html_example).should == expected_node
+    
+  end
+  
+  it "must parse nodes from html except nodes with especified names" do
+    
+    html_example = "<html><head><title>Except</title></head><body>Sample Body</body></html>"
+    
+    # html node without head node
+    html_node = Detree::Node.new(
+      :text => "\tSample Body",
+      :name => "html")
+        
+    # body node
+    body_node = html_node.new_child(:text => "Sample Body", :name => "body")
+    
+    expected_node = html_node
+        
+    Detree::Parser.html(html_example, :except_nodes_names => ['head']).should == expected_node
+    
+  end
+  
+  it "must parse nodes from html except nodes with especified content" do
+    
+    html_example = "<html><head><title>Except</title></head><body>Sample Body</body></html>"
+    
+    # html node without head node
+    html_node = Detree::Node.new(
+      :text => "\tSample Body",
+      :name => "html")
+        
+    # body node
+    body_node = html_node.new_child(:text => "Sample Body", :name => "body")
+    
+    expected_node = html_node
+        
+    Detree::Parser.html(html_example, :except_nodes_content => /\Aexcept\Z/i).should == expected_node
     
   end
   

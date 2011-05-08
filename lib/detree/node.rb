@@ -37,6 +37,7 @@ module Detree
       node.children.size.times do |i|
         if node.children[i] != children[i]
           structure_equal = false
+          break
         end
       end
       
