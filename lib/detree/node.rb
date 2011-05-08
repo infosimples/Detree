@@ -2,11 +2,12 @@ module Detree
   
   class Node
     
-    attr_accessor :text, :name, :children
+    attr_accessor :text, :name, :link, :children
     
     def initialize(args={})
       @text = args[:text] ? args[:text] : ''
       @name = args[:name] ? args[:name] : ''
+      @link = args[:link] ? args[:link] : ''
       @children = args[:children] ? args[:children] : []
     end
     
@@ -32,6 +33,7 @@ module Detree
     
     def ==(node)
       text_equal = node.text == text
+      link_equal = node.link == link
       structure_equal = true
       
       node.children.size.times do |i|
@@ -41,7 +43,7 @@ module Detree
         end
       end
       
-      text_equal and structure_equal
+      text_equal and structure_equal and link_equal
     end
     
   end

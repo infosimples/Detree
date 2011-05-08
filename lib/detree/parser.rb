@@ -6,7 +6,7 @@ module Detree
   class Parser
     
     def self.html(html_str, extra={})
-      Parser.parse(html_str.gsub("\n",'').gsub(/<[\s]*br[\s]*[\/]{0,1}>/i,''), :html, extra)
+      Parser.parse(Parser.html_filter(html_str), :html, extra)
     end
     
     def self.xml(xml_str, extra = {})
@@ -37,6 +37,10 @@ module Detree
     end
     
     def self.parse_element(element, extra)
+      link = element.attr(:href)
+      link = extra[:parser_parent_link] if link.nil?
+      extra[:parser_parent_link] = link
+      
       text = ""
       name = element.name
       children = []
@@ -46,14 +50,14 @@ module Detree
           if c.kind_of? Nokogiri::XML::Text
             text += "#{c.text}\n"
           else
-            node = Parser.parse_element(c, extra)
+            node = Parser.parse_element(c, extra.clone)
             children.push node
             text += "#{node.text_indented_by(1)}\n"
           end
         end
       end
       
-      Detree::Node.new(:text => text.split("\n").join("\n"), :name => name, :children => children)
+      Detree::Node.new(:text => text.split("\n").join("\n"), :name => name, :link => link, :children => children)
     end
     
     def self.prepare_string(str, force_encoding=nil)
@@ -75,6 +79,10 @@ module Detree
       !(  (except_name.include? node.name) or \
           (!except_content.nil? and except_content.match(node.text)) # check the content with a regex
        )
+    end
+    
+    def self.html_filter(html)
+      html.gsub("\n",' ').gsub(/<[\s]*br[\s]*[\/]{0,1}>/i,'').gsub(/[ ]{2,100}/, ' ').gsub(/<[\s]*\/a[\s]*>[\s]*<[\s]*a/i, '</a><a')
     end
     
   end

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 def valid_node
   node = Detree::Node.new(:text => 'Sample', :name => 'html')
-  node.new_child :text => '', :name => 'head'
-  node.new_child :text => 'Sample Body', :name => 'body'
+  node.new_child :text => '', :name => 'head', :link => 'http://www.example.com/'
+  node.new_child :text => 'Sample Body', :name => 'body', :link => 'http://www.example2.com/'
   node
 end
 

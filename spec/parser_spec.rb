@@ -78,7 +78,22 @@ describe Detree::Parser do
     
   end
   
-  xit "parses nodes with links from html" do
+  it "parses nodes with links from html" do
+    
+    
+    html_example = "<html><head><title>Sample Page</title></head><body><a href='1'>Sample</a>   <a href=\"2\">Body<ul><li>Sample li 0</li><li><a href='3'>Sample li 1</a></li><li>Sample li 2</li></ul></a></body></html>"
+
+    expected_root_text = "\t\tSample Page\n\t\tSample\n\t\tBody\n\t\t\t\tSample li 0\n\t\t\t\t\tSample li 1\n\t\t\t\tSample li 2"
+    
+    root = Detree::Parser.html(html_example)
+    
+    root.text.should == expected_root_text
+    
+    ul = root.children[1].children[1].children[0]
+    ul.link.should == '2'
+    ul.children[1].link.should == '2' # li
+    ul.children[1].children[0].link.should == '3' # li a
+    
   end
   
   xit "should convert nodes to hash" do
